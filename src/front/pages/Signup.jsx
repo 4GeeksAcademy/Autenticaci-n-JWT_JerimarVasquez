@@ -9,7 +9,7 @@ export const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const resp = await fetch(process.env.BACKEND_URL + "/api/signup", {
+        const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/signup", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -18,27 +18,33 @@ export const Signup = () => {
         if (resp.ok) {
             navigate("/login");
         } else {
-            alert("Error creating user");
+            const data = await resp.json();
+            alert(data.msg || "Error creating user");
         }
     };
 
     return (
         <div className="container mt-5">
             <h1>Signup</h1>
+
             <form onSubmit={handleSubmit}>
                 <input
                     className="form-control mb-3"
                     type="email"
                     placeholder="Email"
+                    value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
+
                 <input
                     className="form-control mb-3"
                     type="password"
                     placeholder="Password"
+                    value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <button className="btn btn-primary">Create Account</button>
+
+                <button className="btn btn-primary">Create account</button>
             </form>
         </div>
     );

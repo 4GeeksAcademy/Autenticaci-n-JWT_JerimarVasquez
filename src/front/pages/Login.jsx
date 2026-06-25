@@ -9,7 +9,7 @@ export const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const resp = await fetch(process.env.BACKEND_URL + "/api/login", {
+        const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -21,26 +21,31 @@ export const Login = () => {
             sessionStorage.setItem("token", data.token);
             navigate("/private");
         } else {
-            alert("Invalid credentials");
+            alert(data.msg || "Invalid credentials");
         }
     };
 
     return (
         <div className="container mt-5">
             <h1>Login</h1>
+
             <form onSubmit={handleSubmit}>
                 <input
                     className="form-control mb-3"
                     type="email"
                     placeholder="Email"
+                    value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
+
                 <input
                     className="form-control mb-3"
                     type="password"
                     placeholder="Password"
+                    value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
+
                 <button className="btn btn-success">Login</button>
             </form>
         </div>
